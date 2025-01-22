@@ -59,13 +59,14 @@ resource "aws_launch_template" "web_server_template" {
     name = aws_iam_instance_profile.web_server_profile.name
   }
 
-  user_data = base64encode(<<-EOF
+user_data = base64encode(<<-EOF
             #!/bin/bash
-            sudo yum update -y
-            sudo yum install -y httpd
-            sudo systemctl start httpd
-            sudo systemctl enable httpd
-            sudo sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf
+            sudo apt-get update -y
+            sudo apt-get install -y apache2
+            sudo systemctl start apache2
+            sudo systemctl enable apache2
+            sudo sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
+            sudo systemctl restart apache2
             EOF
   )
 }
