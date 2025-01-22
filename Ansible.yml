@@ -1,0 +1,20 @@
+---
+- name: Configure Web Server
+  hosts: web_servers
+  become: true
+  tasks:
+    - name: Install Apache
+      yum:
+        name: httpd
+        state: present
+
+    - name: Update HTTPD port to 8080
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: 'Listen 80'
+        replace: 'Listen 8080'
+
+    - name: Restart Apache
+      service:
+        name: httpd
+        state: restarted
